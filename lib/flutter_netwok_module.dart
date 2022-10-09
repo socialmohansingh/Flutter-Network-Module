@@ -6,6 +6,6 @@ export 'src/base/network_failure.dart';
 export 'src/base/base_entity_model.dart';
 export 'src/base/network_route_end_path.dart';
 export 'src/base/network_service.dart';
-export 'src/adapter/adapter.dart';
-export 'src/adapter/response_model.dart';
+export 'src/response/adapter.dart';
+export 'src/response/response_model.dart';
 export 'src/request/interceptor.dart';

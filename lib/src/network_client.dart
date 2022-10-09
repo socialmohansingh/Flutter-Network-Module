@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_netwok_module/src/adapter/adapter.dart';
-import 'package:flutter_netwok_module/src/adapter/response_model.dart';
+import 'package:flutter_netwok_module/src/response/adapter.dart';
+import 'package:flutter_netwok_module/src/response/response_model.dart';
 import 'package:flutter_netwok_module/src/base/http_method.dart';
 import 'package:flutter_netwok_module/src/base/network_configuration.dart';
 import 'package:flutter_netwok_module/src/base/network_failure.dart';
