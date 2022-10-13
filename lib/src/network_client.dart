@@ -4,7 +4,7 @@ import 'package:flutter_netwok_module/src/response/response_model.dart';
 import 'package:flutter_netwok_module/src/base/http_method.dart';
 import 'package:flutter_netwok_module/src/base/network_configuration.dart';
 import 'package:flutter_netwok_module/src/base/network_failure.dart';
-import 'package:flutter_netwok_module/src/base/network_route_end_path.dart';
+import 'package:flutter_netwok_module/src/base/network_api.dart';
 import 'package:flutter_netwok_module/src/base/network_service.dart';
 import 'package:flutter_netwok_module/src/dio_client/dio_client.dart';
 import 'package:flutter_netwok_module/src/request/interceptor.dart';
@@ -44,7 +44,7 @@ class NetworkClient extends BaseNetworkClient {
         );
 
   Future<Either<NetworkFailure, NetworkResponseModel>> request<T>(
-    NetworkRouteEndPath endPath,
+    NetworkApi endPath,
   ) async {
     //Handle Interceptors
     NetworkFailure? interceptorFailure;
@@ -84,7 +84,7 @@ class NetworkClient extends BaseNetworkClient {
     //Handle Adapters
     for (NetworkResponseAdapter adapter in _adapters) {
       Either<NetworkFailure, NetworkResponseModel> aResponse =
-          await adapter.onResponseAdapter(
+          await adapter.onResponse(
         response,
         endPath,
         this,

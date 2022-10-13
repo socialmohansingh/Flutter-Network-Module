@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_netwok_module/src/base/network_route_end_path.dart';
+import 'package:flutter_netwok_module/src/base/network_api.dart';
 
 @immutable
 class NetworkResponseModel {
-  final NetworkRouteEndPath endPath;
+  final NetworkApi endPath;
   final int statusCode;
   final String message;
   final Map<String, dynamic> data;

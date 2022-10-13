@@ -14,7 +14,7 @@ class DIONetworkService extends NetworkService {
 
   @override
   Future<Either<NetworkFailure, NetworkResponseModel>> get(
-      NetworkRouteEndPath endPath) async {
+      NetworkApi endPath) async {
     try {
       String finalUrl = config.baseURL.baseURL +
           config.baseURL.baseVersionEndPath +
@@ -43,7 +43,7 @@ class DIONetworkService extends NetworkService {
 
   @override
   Future<Either<NetworkFailure, NetworkResponseModel>> post(
-      NetworkRouteEndPath endPath) async {
+      NetworkApi endPath) async {
     try {
       String finalUrl = config.baseURL.baseURL +
           config.baseURL.baseVersionEndPath +
@@ -71,15 +71,14 @@ class DIONetworkService extends NetworkService {
   }
 
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel>> put(
-      NetworkRouteEndPath endPath) {
+  Future<Either<NetworkFailure, NetworkResponseModel>> put(NetworkApi endPath) {
     // TODO: implement put
     throw UnimplementedError();
   }
 
   @override
   Future<Either<NetworkFailure, NetworkResponseModel>> delete(
-      NetworkRouteEndPath endPath) {
+      NetworkApi endPath) {
     // TODO: implement delete
     throw UnimplementedError();
   }

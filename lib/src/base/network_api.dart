@@ -9,14 +9,14 @@ abstract class EndPathParam {
   });
 }
 
-abstract class NetworkRouteEndPath extends EndPathParam {
+abstract class NetworkApi extends EndPathParam {
   final String? alterNativeBaseURL = "";
   final String endPath = "";
   final bool shouldRequireAccessToken = true;
   final HTTPMethod method = HTTPMethod.get;
   final Map<String, String>? headers = {};
 
-  NetworkRouteEndPath({
+  NetworkApi({
     super.bodyParams = const {},
     super.queryParams = const {},
   });

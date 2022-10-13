@@ -9,15 +9,12 @@ abstract class NetworkService {
   final NetworkConfiguration config;
   NetworkService({required this.config});
 
-  Future<Either<NetworkFailure, NetworkResponseModel>> get(
-      NetworkRouteEndPath endPath);
+  Future<Either<NetworkFailure, NetworkResponseModel>> get(NetworkApi endPath);
 
-  Future<Either<NetworkFailure, NetworkResponseModel>> post(
-      NetworkRouteEndPath endPath);
+  Future<Either<NetworkFailure, NetworkResponseModel>> post(NetworkApi endPath);
 
-  Future<Either<NetworkFailure, NetworkResponseModel>> put(
-      NetworkRouteEndPath endPath);
+  Future<Either<NetworkFailure, NetworkResponseModel>> put(NetworkApi endPath);
 
   Future<Either<NetworkFailure, NetworkResponseModel>> delete(
-      NetworkRouteEndPath endPath);
+      NetworkApi endPath);
 }

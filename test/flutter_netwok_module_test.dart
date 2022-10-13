@@ -61,15 +61,15 @@ void _simpleAdapterSuccessGetRequest() {
   });
 }
 
-class SamplePath extends NetworkRouteEndPath {
+class SamplePath extends NetworkApi {
   @override
   String get endPath => "raw/4Nngn37p";
 }
 
 class MyInterCeptorFailed extends Interceptor {
   @override
-  Future<Either<NetworkFailure, NetworkRouteEndPath>> onRequest(
-      NetworkRouteEndPath endPath, NetworkClient client) async {
+  Future<Either<NetworkFailure, NetworkApi>> onRequest(
+      NetworkApi endPath, NetworkClient client) async {
     return const Left(
         NetworkFailure(statusCode: 300, message: "Failed from Interceptor"));
   }
@@ -77,8 +77,8 @@ class MyInterCeptorFailed extends Interceptor {
 
 class MyInterCeptorSuccess extends Interceptor {
   @override
-  Future<Either<NetworkFailure, NetworkRouteEndPath>> onRequest(
-      NetworkRouteEndPath endPath, NetworkClient client) async {
+  Future<Either<NetworkFailure, NetworkApi>> onRequest(
+      NetworkApi endPath, NetworkClient client) async {
     return Right(endPath);
   }
 }
@@ -86,9 +86,9 @@ class MyInterCeptorSuccess extends Interceptor {
 class MyAdapter extends NetworkResponseAdapter {
   static bool isCalled = false;
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel>> onResponseAdapter(
+  Future<Either<NetworkFailure, NetworkResponseModel>> onResponse(
       Either<NetworkFailure, NetworkResponseModel> response,
-      NetworkRouteEndPath endPath,
+      NetworkApi endPath,
       NetworkClient client) async {
     print(endPath.endPath);
     if (!MyAdapter.isCalled) {
@@ -104,9 +104,9 @@ class MyAdapter extends NetworkResponseAdapter {
 class MyFailedAdapter extends NetworkResponseAdapter {
   static bool isCalled = false;
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel>> onResponseAdapter(
+  Future<Either<NetworkFailure, NetworkResponseModel>> onResponse(
       Either<NetworkFailure, NetworkResponseModel> response,
-      NetworkRouteEndPath endPath,
+      NetworkApi endPath,
       NetworkClient client) async {
     print(endPath.endPath);
     if (!MyAdapter.isCalled) {
