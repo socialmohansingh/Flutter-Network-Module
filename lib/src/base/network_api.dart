@@ -1,3 +1,4 @@
+import 'package:flutter_netwok_module/src/base/base_entity_model.dart';
 import 'package:flutter_netwok_module/src/base/http_method.dart';
 
 abstract class EndPathParam {
@@ -9,14 +10,16 @@ abstract class EndPathParam {
   });
 }
 
-abstract class NetworkApi extends EndPathParam {
+abstract class RequestApi extends EndPathParam {
   final String? alterNativeBaseURL = "";
   final String endPath = "";
   final bool shouldRequireAccessToken = true;
   final HTTPMethod method = HTTPMethod.get;
   final Map<String, String>? headers = {};
+  final EntityParser parser;
 
-  NetworkApi({
+  RequestApi({
+    required this.parser,
     super.bodyParams = const {},
     super.queryParams = const {},
   });

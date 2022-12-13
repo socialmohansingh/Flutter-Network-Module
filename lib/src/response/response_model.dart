@@ -1,17 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_netwok_module/src/base/base_entity_model.dart';
 import 'package:flutter_netwok_module/src/base/network_api.dart';
 
-@immutable
-class NetworkResponseModel {
-  final NetworkApi endPath;
+class NetworkResponseModel<T extends Entity> {
+  final RequestApi api;
   final int statusCode;
   final String message;
-  final Map<String, dynamic> data;
+  final Map<String, dynamic> rowObject;
+  T? object;
 
-  const NetworkResponseModel({
-    required this.endPath,
+  NetworkResponseModel({
+    required this.api,
     required this.statusCode,
     required this.message,
-    required this.data,
+    required this.rowObject,
+    this.object,
   });
 }

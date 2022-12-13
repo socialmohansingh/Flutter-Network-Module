@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_netwok_module/src/base/base_entity_model.dart';
 import 'package:flutter_netwok_module/src/response/response_model.dart';
 import 'package:flutter_netwok_module/src/base/network_failure.dart';
-import 'package:flutter_netwok_module/src/base/network_route_end_path.dart';
+import 'package:flutter_netwok_module/src/base/network_api.dart';
 import 'package:flutter_netwok_module/src/base/network_service.dart';
 
 class DIONetworkService extends NetworkService {
@@ -13,26 +14,26 @@ class DIONetworkService extends NetworkService {
   DIONetworkService({required super.config});
 
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel>> get(
-      NetworkApi endPath) async {
+  Future<Either<NetworkFailure, NetworkResponseModel<T>>> get<T extends Entity>(
+      RequestApi api) async {
     try {
       String finalUrl = config.baseURL.baseURL +
           config.baseURL.baseVersionEndPath +
-          endPath.endPath;
+          api.endPath;
 
       Response<dynamic> response = await dioClient.get(
         finalUrl,
-        queryParameters: endPath.queryParams,
+        queryParameters: api.queryParams,
         options: Options(
-          headers: endPath.headers,
+          headers: api.headers,
         ),
       );
       return Right(
         NetworkResponseModel(
-          endPath: endPath,
+          api: api,
           statusCode: response.statusCode ?? 0,
           message: response.statusMessage ?? "",
-          data: jsonDecode(response.data),
+          rowObject: jsonDecode(response.data),
         ),
       );
     } catch (e) {
@@ -42,27 +43,27 @@ class DIONetworkService extends NetworkService {
   }
 
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel>> post(
-      NetworkApi endPath) async {
+  Future<Either<NetworkFailure, NetworkResponseModel<T>>>
+      post<T extends Entity>(RequestApi api) async {
     try {
       String finalUrl = config.baseURL.baseURL +
           config.baseURL.baseVersionEndPath +
-          endPath.endPath;
+          api.endPath;
       Response<dynamic> response = await dioClient.post(
         finalUrl,
-        queryParameters: endPath.queryParams,
-        data: endPath.bodyParams,
+        queryParameters: api.queryParams,
+        data: api.bodyParams,
         options: Options(
-          headers: endPath.headers,
+          headers: api.headers,
         ),
       );
 
       return Right(
         NetworkResponseModel(
-          endPath: endPath,
+          api: api,
           statusCode: response.statusCode ?? 200,
           message: response.statusMessage ?? "",
-          data: jsonDecode(response.data),
+          rowObject: jsonDecode(response.data),
         ),
       );
     } catch (e) {
@@ -71,14 +72,15 @@ class DIONetworkService extends NetworkService {
   }
 
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel>> put(NetworkApi endPath) {
+  Future<Either<NetworkFailure, NetworkResponseModel<T>>> put<T extends Entity>(
+      RequestApi api) {
     // TODO: implement put
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel>> delete(
-      NetworkApi endPath) {
+  Future<Either<NetworkFailure, NetworkResponseModel<T>>>
+      delete<T extends Entity>(RequestApi api) {
     // TODO: implement delete
     throw UnimplementedError();
   }

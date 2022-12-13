@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_netwok_module/src/base/base_entity_model.dart';
 import 'package:flutter_netwok_module/src/response/adapter.dart';
 import 'package:flutter_netwok_module/src/response/response_model.dart';
 import 'package:flutter_netwok_module/src/base/http_method.dart';
@@ -43,18 +44,19 @@ class NetworkClient extends BaseNetworkClient {
               ),
         );
 
-  Future<Either<NetworkFailure, NetworkResponseModel>> request<T>(
-    NetworkApi endPath,
+  Future<Either<NetworkFailure, NetworkResponseModel<T>>>
+      request<T extends Entity>(
+    RequestApi api,
   ) async {
     //Handle Interceptors
     NetworkFailure? interceptorFailure;
     for (var interceptor in _interceptors) {
-      var interceptRequest = await interceptor.onRequest(endPath, this);
+      var interceptRequest = await interceptor.onRequest(api, this);
       interceptRequest.fold((l) {
         interceptorFailure = l;
         return Left(l);
       }, (r) {
-        endPath = r;
+        api = r;
       });
       if (interceptRequest.isLeft()) {
         break;
@@ -65,28 +67,38 @@ class NetworkClient extends BaseNetworkClient {
     }
 
     //Ntwork Client Request
-    Either<NetworkFailure, NetworkResponseModel> response;
-    switch (endPath.method) {
+    Either<NetworkFailure, NetworkResponseModel<T>> response;
+    switch (api.method) {
       case HTTPMethod.get:
-        response = await service.get(endPath);
+        response = await service.get(api);
         break;
       case HTTPMethod.post:
-        response = await service.post(endPath);
+        response = await service.post(api);
         break;
       case HTTPMethod.put:
-        response = await service.put(endPath);
+        response = await service.put(api);
         break;
       case HTTPMethod.delete:
-        response = await service.delete(endPath);
+        response = await service.delete(api);
         break;
     }
 
+    response = response.fold((l) => Left(l), (r) {
+      final res = NetworkResponseModel<T>(
+          api: api,
+          statusCode: r.statusCode,
+          message: r.message,
+          rowObject: r.rowObject,
+          object: api.parser.parseObject(r.rowObject) as T);
+      return Right(res);
+    });
+
     //Handle Adapters
     for (NetworkResponseAdapter adapter in _adapters) {
-      Either<NetworkFailure, NetworkResponseModel> aResponse =
+      Either<NetworkFailure, NetworkResponseModel<T>> aResponse =
           await adapter.onResponse(
         response,
-        endPath,
+        api,
         this,
       );
       if (aResponse.isLeft()) {

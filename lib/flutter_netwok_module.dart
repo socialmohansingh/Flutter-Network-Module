@@ -4,7 +4,7 @@ export 'src/base/http_method.dart';
 export 'src/base/network_configuration.dart';
 export 'src/base/network_failure.dart';
 export 'src/base/base_entity_model.dart';
-export 'src/base/network_route_end_path.dart';
+export 'src/base/network_api.dart';
 export 'src/base/network_service.dart';
 export 'src/response/adapter.dart';
 export 'src/response/response_model.dart';
