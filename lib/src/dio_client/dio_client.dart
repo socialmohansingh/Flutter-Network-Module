@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_netwok_module/src/base/base_entity_model.dart';
+import 'package:flutter_core/flutter_core.dart';
+import 'package:flutter_netwok_module/src/network/network_failure.dart';
+import 'package:flutter_netwok_module/src/network/network_service.dart';
 import 'package:flutter_netwok_module/src/response/response_model.dart';
-import 'package:flutter_netwok_module/src/base/network_failure.dart';
-import 'package:flutter_netwok_module/src/base/network_api.dart';
-import 'package:flutter_netwok_module/src/base/network_service.dart';
+import 'package:flutter_netwok_module/src/request/request_api.dart';
 
 class DIONetworkService extends NetworkService {
   final Dio dioClient = Dio();
@@ -14,7 +13,7 @@ class DIONetworkService extends NetworkService {
   DIONetworkService({required super.config});
 
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel<T>>> get<T extends Entity>(
+  Future<Result<NetworkFailure, NetworkResponseModel<T>>> get<T extends Entity>(
       RequestApi api) async {
     try {
       String finalUrl = config.baseURL.baseURL +
@@ -28,7 +27,7 @@ class DIONetworkService extends NetworkService {
           headers: api.headers,
         ),
       );
-      return Right(
+      return Success(
         NetworkResponseModel(
           api: api,
           statusCode: response.statusCode ?? 0,
@@ -38,12 +37,12 @@ class DIONetworkService extends NetworkService {
       );
     } catch (e) {
       //TODO: Handle Throw expection
-      return Left(NetworkFailure(message: e.toString(), statusCode: 1));
+      return Failure(NetworkFailure(message: e.toString(), statusCode: 1));
     }
   }
 
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel<T>>>
+  Future<Result<NetworkFailure, NetworkResponseModel<T>>>
       post<T extends Entity>(RequestApi api) async {
     try {
       String finalUrl = config.baseURL.baseURL +
@@ -58,7 +57,7 @@ class DIONetworkService extends NetworkService {
         ),
       );
 
-      return Right(
+      return Success(
         NetworkResponseModel(
           api: api,
           statusCode: response.statusCode ?? 200,
@@ -67,19 +66,19 @@ class DIONetworkService extends NetworkService {
         ),
       );
     } catch (e) {
-      return Left(NetworkFailure(message: e.toString(), statusCode: 400));
+      return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
     }
   }
 
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel<T>>> put<T extends Entity>(
+  Future<Result<NetworkFailure, NetworkResponseModel<T>>> put<T extends Entity>(
       RequestApi api) {
     // TODO: implement put
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<NetworkFailure, NetworkResponseModel<T>>>
+  Future<Result<NetworkFailure, NetworkResponseModel<T>>>
       delete<T extends Entity>(RequestApi api) {
     // TODO: implement delete
     throw UnimplementedError();

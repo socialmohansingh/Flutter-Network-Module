@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class NetworkFailure extends Failure {
+class NetworkFailure extends NetworkError {
   final int statusCode;
   const NetworkFailure({
     required this.statusCode,
@@ -11,10 +11,10 @@ class NetworkFailure extends Failure {
 }
 
 @immutable
-abstract class Failure extends Equatable {
+abstract class NetworkError extends Equatable {
   final String message;
 
-  const Failure({this.message = ""});
+  const NetworkError({this.message = ""});
 
   @override
   List<Object> get props => [message];

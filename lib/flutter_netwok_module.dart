@@ -1,11 +1,4 @@
-export 'src/network_client.dart';
-export 'src/base/base_entity_model.dart';
-export 'src/base/http_method.dart';
-export 'src/base/network_configuration.dart';
-export 'src/base/network_failure.dart';
-export 'src/base/base_entity_model.dart';
-export 'src/base/network_api.dart';
-export 'src/base/network_service.dart';
-export 'src/response/adapter.dart';
-export 'src/response/response_model.dart';
-export 'src/request/interceptor.dart';
+export 'src/network/network.dart';
+export 'src/request/request.dart';
+export 'src/response/response.dart';
+export 'src/config/config.dart';

@@ -1,6 +1,7 @@
 name: flutter_netwok_module
 description: A new Flutter package project.
 version: 0.0.1
+publish_to: none
 homepage:
 
 environment:
@@ -8,11 +9,15 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
-  dartz: ^0.10.1
   dio: ^4.0.6
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+
+  flutter_core:
+    git:
+      url: https://github.com/bemohansingh/flutter_core.git
+      ref: main
 
 dev_dependencies:
   flutter_test:

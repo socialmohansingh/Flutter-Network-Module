@@ -1,5 +1,5 @@
-import 'package:flutter_netwok_module/src/base/base_entity_model.dart';
-import 'package:flutter_netwok_module/src/base/http_method.dart';
+import 'package:flutter_core/flutter_core.dart';
+import 'package:flutter_netwok_module/src/network/http_method.dart';
 
 abstract class EndPathParam {
   final Map<String, dynamic> bodyParams;

@@ -1,5 +1,5 @@
-import 'package:flutter_netwok_module/src/base/base_entity_model.dart';
-import 'package:flutter_netwok_module/src/base/network_api.dart';
+import 'package:flutter_core/flutter_core.dart';
+import 'package:flutter_netwok_module/src/request/request_api.dart';
 
 class NetworkResponseModel<T extends Entity> {
   final RequestApi api;
