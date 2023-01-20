@@ -32,7 +32,7 @@ class DIONetworkService extends NetworkService {
           api: api,
           statusCode: response.statusCode ?? 0,
           message: response.statusMessage ?? "",
-          rowObject: jsonDecode(response.data),
+          rowObject: response.data,
         ),
       );
     } catch (e) {
