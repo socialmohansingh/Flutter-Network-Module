@@ -36,8 +36,16 @@ class DIONetworkService extends NetworkService {
         ),
       );
     } catch (e) {
-      //TODO: Handle Throw expection
-      return Failure(NetworkFailure(message: e.toString(), statusCode: 1));
+      if (e is DioError) {
+        final data = e.response?.data as Map<String, dynamic>;
+        final error = data["message"] as String?;
+
+        return Failure(NetworkFailure(
+            message: error ?? e.toString(),
+            statusCode: e.response?.statusCode ?? 400));
+      } else {
+        return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
+      }
     }
   }
 
@@ -56,7 +64,6 @@ class DIONetworkService extends NetworkService {
           headers: api.headers,
         ),
       );
-
       return Success(
         NetworkResponseModel(
           api: api,
@@ -66,7 +73,15 @@ class DIONetworkService extends NetworkService {
         ),
       );
     } catch (e) {
-      return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
+      if (e is DioError) {
+        final data = e.response?.data as Map<String, dynamic>;
+        final error = data["message"] as String?;
+        return Failure(NetworkFailure(
+            message: error ?? e.toString(),
+            statusCode: e.response?.statusCode ?? 400));
+      } else {
+        return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
+      }
     }
   }
 

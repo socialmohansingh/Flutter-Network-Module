@@ -19,11 +19,12 @@ void _simpleGetRequest() {
     NetworkClient client = NetworkClient(
         config: MyNetworkConfig(
             baseURL: BaseURL(
-              baseURL: "https://pastebin.com/",
+              baseURL: "https://backend.appulse.com.au/api/",
             ),
-            adapters: [MyAdapter()]));
-    var res = await client
-        .request<SampleEntity>(SamplePath(parser: SampleEntityParser()));
+            adapters: []));
+    var res = await client.request<User>(SamplePath(
+        parser: SampleEntityParser(),
+        bodyParams: {"email": "sdf", "password": "sdf"}));
     res.fold((l) => print(l.message), (r) => print(r.object));
   });
 }
@@ -70,10 +71,13 @@ void _simpleGetRequest() {
 // }
 
 class SamplePath extends RequestApi {
-  SamplePath({required super.parser});
+  SamplePath({required super.parser, super.bodyParams});
 
   @override
-  String get endPath => "raw/4Nngn37p";
+  String get endPath => "employee/auth/login";
+  @override
+  // TODO: implement method
+  HTTPMethod get method => HTTPMethod.post;
 }
 
 class SampleEntity extends Entity {
@@ -151,3 +155,57 @@ class MyAdapter extends Adapter {
 //     }
 //   }
 // }
+
+class User extends Entity {
+  final int id;
+  String? firstName;
+  String? lastName;
+  String? personalMobileNumber;
+  String? personalEmail;
+  String? avatar;
+  String? workMobileNumber;
+  String? workEmail;
+  String? license;
+  DateTime? licenseExpiresAt;
+  String? vehicleRegistrationNumber;
+  User({
+    required this.id,
+    this.firstName,
+    this.lastName,
+    this.personalMobileNumber,
+    this.personalEmail,
+    this.avatar,
+    this.workMobileNumber,
+    this.workEmail,
+    this.license,
+    this.licenseExpiresAt,
+    this.vehicleRegistrationNumber,
+  });
+
+  factory User.fromJson(Map<String, dynamic> map) {
+    final userJson = map["data"] as Map<String, dynamic>;
+    final dateString = userJson["licenseExpiresAt"] as String?;
+    final licenseExpiresDate =
+        dateString == null ? null : DateTime.parse(dateString);
+    return User(
+      id: userJson["id"] as int,
+      firstName: userJson["firstName"] as String?,
+      lastName: userJson["lastName"] as String?,
+      personalMobileNumber: userJson["personalMobileNumber"] as String?,
+      personalEmail: userJson["personalEmail"] as String?,
+      avatar: userJson["avatar"] as String?,
+      workMobileNumber: userJson["workMobileNumber"] as String?,
+      workEmail: userJson["workEmail"] as String?,
+      license: userJson["license"] as String?,
+      licenseExpiresAt: licenseExpiresDate,
+      vehicleRegistrationNumber:
+          userJson["vehicleRegistrationNumber"] as String?,
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+    return json;
+  }
+}
