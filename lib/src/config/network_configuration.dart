@@ -15,7 +15,7 @@ abstract class NetworkConfiguration {
   BaseURL baseURL;
   double timeout;
   RequestType networkRequestType;
-  List<Interceptor> interceptors;
+  List<AppInterceptor> interceptors;
   List<Adapter> adapters;
 
   NetworkConfiguration({
