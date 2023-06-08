@@ -61,6 +61,9 @@ class NetworkClient extends BaseNetworkClient {
       case HTTPMethod.delete:
         response = await service.delete(api);
         break;
+      case HTTPMethod.patch:
+        response = await service.patch(api);
+        break;
     }
 
     response = response.fold((l) => Failure(l), (r) {

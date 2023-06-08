@@ -1,4 +1,4 @@
-enum HTTPMethod { get, post, put, delete }
+enum HTTPMethod { get, post, put, delete, patch }
 
 extension HTTPMethodExtension on HTTPMethod {
   String value() {

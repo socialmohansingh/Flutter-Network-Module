@@ -20,4 +20,7 @@ abstract class NetworkService {
 
   Future<Result<NetworkFailure, NetworkResponseModel<T>>>
       delete<T extends Entity>(RequestApi api);
+
+  Future<Result<NetworkFailure, NetworkResponseModel<T>>>
+      patch<T extends Entity>(RequestApi api);
 }
