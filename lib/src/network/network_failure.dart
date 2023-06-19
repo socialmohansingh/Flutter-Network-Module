@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 @immutable
 class NetworkFailure extends NetworkError {
   final int statusCode;
+  final Map<String, dynamic>? rowObject;
   const NetworkFailure({
     required this.statusCode,
     required super.message,
+    this.rowObject,
   });
 }
 

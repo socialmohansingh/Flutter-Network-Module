@@ -4,3 +4,4 @@ export 'src/response/response.dart';
 export 'src/config/config.dart';
 export 'package:dio/dio.dart';
 export 'src/dio_client/dio_client.dart';
+export 'package:connectivity_plus/connectivity_plus.dart';

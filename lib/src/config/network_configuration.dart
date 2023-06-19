@@ -22,7 +22,7 @@ abstract class NetworkConfiguration {
     required this.baseURL,
     this.interceptors = const [],
     this.adapters = const [],
-    this.timeout = 5000,
+    this.timeout = 70,
     this.networkRequestType = RequestType.rest,
   });
 }

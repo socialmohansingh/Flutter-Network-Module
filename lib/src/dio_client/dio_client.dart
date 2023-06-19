@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_core/flutter_core.dart';
 import 'package:flutter_netwok_module/src/network/network_failure.dart';
@@ -36,20 +35,7 @@ class DIONetworkService extends NetworkService {
         ),
       );
     } catch (e) {
-      try {
-        if (e is DioError) {
-          final data = e.response?.data as Map<String, dynamic>;
-          final error = data["message"] as String?;
-          return Failure(NetworkFailure(
-              message: error ?? e.toString(),
-              statusCode: e.response?.statusCode ?? 400));
-        } else {
-          return Failure(
-              NetworkFailure(message: e.toString(), statusCode: 400));
-        }
-      } catch (e) {
-        return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
-      }
+      return await _parseError(e);
     }
   }
 
@@ -77,20 +63,7 @@ class DIONetworkService extends NetworkService {
         ),
       );
     } catch (e) {
-      try {
-        if (e is DioError) {
-          final data = e.response?.data as Map<String, dynamic>;
-          final error = data["message"] as String?;
-          return Failure(NetworkFailure(
-              message: error ?? e.toString(),
-              statusCode: e.response?.statusCode ?? 400));
-        } else {
-          return Failure(
-              NetworkFailure(message: e.toString(), statusCode: 400));
-        }
-      } catch (e) {
-        return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
-      }
+      return await _parseError(e);
     }
   }
 
@@ -118,20 +91,7 @@ class DIONetworkService extends NetworkService {
         ),
       );
     } catch (e) {
-      try {
-        if (e is DioError) {
-          final data = e.response?.data as Map<String, dynamic>;
-          final error = data["message"] as String?;
-          return Failure(NetworkFailure(
-              message: error ?? e.toString(),
-              statusCode: e.response?.statusCode ?? 400));
-        } else {
-          return Failure(
-              NetworkFailure(message: e.toString(), statusCode: 400));
-        }
-      } catch (e) {
-        return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
-      }
+      return await _parseError(e);
     }
   }
 
@@ -159,20 +119,7 @@ class DIONetworkService extends NetworkService {
         ),
       );
     } catch (e) {
-      try {
-        if (e is DioError) {
-          final data = e.response?.data as Map<String, dynamic>;
-          final error = data["message"] as String?;
-          return Failure(NetworkFailure(
-              message: error ?? e.toString(),
-              statusCode: e.response?.statusCode ?? 400));
-        } else {
-          return Failure(
-              NetworkFailure(message: e.toString(), statusCode: 400));
-        }
-      } catch (e) {
-        return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
-      }
+      return await _parseError(e);
     }
   }
 
@@ -200,20 +147,47 @@ class DIONetworkService extends NetworkService {
         ),
       );
     } catch (e) {
-      try {
-        if (e is DioError) {
+      return await _parseError(e);
+    }
+  }
+
+  Future<Result<NetworkFailure, NetworkResponseModel<T>>>
+      _parseError<T extends Entity>(e) async {
+    try {
+      if (e is DioError) {
+        if (e.response?.data != null) {
           final data = e.response?.data as Map<String, dynamic>;
           final error = data["message"] as String?;
           return Failure(NetworkFailure(
-              message: error ?? e.toString(),
-              statusCode: e.response?.statusCode ?? 400));
+            message: error ?? e.toString(),
+            statusCode: e.response?.statusCode ?? 400,
+            rowObject: data,
+          ));
         } else {
-          return Failure(
-              NetworkFailure(message: e.toString(), statusCode: 400));
+          final connection = await checkInternetConnection();
+          if (connection) {
+            return Failure(NetworkFailure(message: e.message, statusCode: 400));
+          } else {
+            return Failure(const NetworkFailure(
+                message:
+                    "Internet connection appears to be offline. Please check your internet connection.",
+                statusCode: 522));
+          }
         }
-      } catch (e) {
+      } else {
         return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
       }
+    } catch (e) {
+      return Failure(NetworkFailure(message: e.toString(), statusCode: 400));
+    }
+  }
+
+  Future<bool> checkInternetConnection() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      return false;
+    } else {
+      return true;
     }
   }
 }
