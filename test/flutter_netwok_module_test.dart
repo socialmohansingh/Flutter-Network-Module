@@ -18,12 +18,11 @@ void main() {
 void _simpleGetRequest() {
   test("Network request test", () async {
     WidgetsFlutterBinding.ensureInitialized();
-    NetworkClient client = NetworkClient(
-        config: MyNetworkConfig(
-            baseURL: BaseURL(
-              baseURL: "https://backend.appulse.com.au/api/",
-            ),
-            adapters: []));
+    NetworkClient client = NetworkClient.fromConfig(MyNetworkConfig(
+        baseURL: BaseURL(
+          baseURL: "URL",
+        ),
+        adapters: []));
     var res = await client.request<User>(SamplePath(
         parser: SampleEntityParser(),
         bodyParams: {"email": "sdf", "password": "sdf"}));

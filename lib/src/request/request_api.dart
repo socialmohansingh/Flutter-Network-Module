@@ -19,10 +19,10 @@ abstract class RequestApi extends EndPathParam {
   final bool shouldRequireAccessToken = true;
   final HTTPMethod method = HTTPMethod.get;
   final Map<String, String>? headers = {};
-  final EntityParser parser;
+  final EntityParser? parser;
 
   RequestApi({
-    required this.parser,
+    this.parser,
     super.bodyParams = const {},
     super.queryParams = const {},
     super.formdata,

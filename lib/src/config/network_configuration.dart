@@ -1,6 +1,4 @@
 import 'package:flutter_netwok_module/flutter_netwok_module.dart';
-import 'package:flutter_netwok_module/src/request/network_type.dart';
-import 'package:flutter_netwok_module/src/request/request.dart';
 
 class BaseURL {
   String baseURL;

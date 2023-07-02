@@ -1,6 +1,5 @@
 import 'package:flutter_core/flutter_core.dart';
 import 'package:flutter_netwok_module/flutter_netwok_module.dart';
-import 'package:flutter_netwok_module/src/dio_client/dio_client.dart';
 
 abstract class BaseNetworkClient {
   final NetworkService service;
@@ -13,15 +12,20 @@ abstract class BaseNetworkClient {
 }
 
 class NetworkClient extends BaseNetworkClient {
-  NetworkClient({
+  NetworkClient._({
     required super.config,
-    NetworkService? networkService,
-  }) : super(
-          service: networkService ??
-              DIONetworkService(
-                config: config,
-              ),
-        );
+    required super.service,
+  });
+  factory NetworkClient.fromConfig(NetworkConfiguration config) {
+    final service = DIONetworkService(
+      config: config,
+    );
+    return NetworkClient._(config: config, service: service);
+  }
+
+  factory NetworkClient.fromService(NetworkService service) {
+    return NetworkClient._(config: service.config, service: service);
+  }
 
   Future<Result<NetworkFailure, NetworkResponseModel<T>>>
       request<T extends Entity>(
@@ -72,7 +76,9 @@ class NetworkClient extends BaseNetworkClient {
           statusCode: r.statusCode,
           message: r.message,
           rowObject: r.rowObject,
-          object: api.parser.parseObject(r.rowObject) as T);
+          object: api.parser != null
+              ? api.parser!.parseObject(r.rowObject) as T
+              : null);
       return Success(res);
     });
 
