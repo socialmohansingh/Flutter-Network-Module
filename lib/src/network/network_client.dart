@@ -31,6 +31,7 @@ class NetworkClient extends BaseNetworkClient {
     return NetworkClient._(config: service.config, service: service);
   }
 
+  @override
   Future<Result<NetworkFailure, NetworkResponseModel<T>>>
       request<T extends Entity>(
     RequestApi api,
