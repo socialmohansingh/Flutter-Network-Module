@@ -4,7 +4,11 @@ import 'package:flutter_netwok_module/flutter_netwok_module.dart';
 abstract class BaseNetworkClient {
   final NetworkService service;
   final NetworkConfiguration config;
-
+  Future<Result<NetworkFailure, NetworkResponseModel<T>>>
+      request<T extends Entity>(
+    RequestApi api,
+  );
+  
   BaseNetworkClient({
     required this.service,
     required this.config,
